@@ -29,6 +29,8 @@ def is_valid(r, c):
     return 0 <= r <= 2 and 0 <= c <= 2
 
 
+
+
 def move_blank(s, new_r, new_c):
     board, r, c = s
     new_board = list(board)
@@ -48,7 +50,55 @@ def h1(s):
             res += 1
     return res
 
+def correctRow(value):
+    if value in [1,2,3]:
+        return 0
+    elif value in [4,5,6]:
+        return 1
+    else:
+        return 2
+    
+def correctColumn(value):
+    if value in [1,4,7]:
+        return 0
+    elif value in [2,5,8]:
+        return 1
+    else:
+        return 2
+
+def currentRow(index):
+    if index in [0,1,2]:
+        return 0
+    elif index in [3,4,5]:
+        return 1
+    else:
+        return 2
+    
+def currentColumn(index):
+    if index in [0,3,6]:
+        return 0
+    elif index in [1,4,7]:
+        return 1
+    else:
+        return 2
+
 def h3(s):
     # implement this function
+    goal = (1,2,3,4,5,6,7,8,0)
     board, _, _ = s
-    return 0
+    res = 0
+    wrongRows = 0
+    wrongCols = 0
+    for i in range(0,9):
+        currentValue = board[i]
+        cColumn = correctColumn(currentValue)
+        cRow = correctRow(currentValue)
+        curCol = currentColumn(i)
+        curRow = currentRow(i)
+        
+        if cColumn != curCol:
+            wrongCols += 1
+        if cRow != curRow:
+            wrongRows += 1
+    res = wrongCols + wrongRows
+    return res
