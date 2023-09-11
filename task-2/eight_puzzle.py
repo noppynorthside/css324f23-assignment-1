@@ -1,13 +1,10 @@
 import copy
 
-
 def initial_state():
     return ((7, 2, 4, 5, 0, 6, 8, 3, 1), 1, 1)
 
-
 def is_goal(s):
     return s[0] == (1, 2, 3, 4, 5, 6, 7, 8, 0)
-
 
 def successors(s):
     _, r, c = s
@@ -24,12 +21,8 @@ def successors(s):
     if is_valid(new_r, new_c):
         yield move_blank(s, new_r, new_c), 1
 
-
 def is_valid(r, c):
     return 0 <= r <= 2 and 0 <= c <= 2
-
-
-
 
 def move_blank(s, new_r, new_c):
     board, r, c = s
@@ -50,31 +43,15 @@ def h1(s):
             res += 1
     return res
 
-def correctRow(value):
-    if value in [1,2,3]:
-        return 0
-    elif value in [4,5,6]:
-        return 1
-    else:
-        return 2
-    
-def correctColumn(value):
-    if value in [1,4,7]:
-        return 0
-    elif value in [2,5,8]:
-        return 1
-    else:
-        return 2
-
-def currentRow(index):
-    if index in [0,1,2]:
+def current_r(index):
+    if index in [0,1,2] :
         return 0
     elif index in [3,4,5]:
         return 1
     else:
         return 2
-    
-def currentColumn(index):
+     
+def current_c(index):
     if index in [0,3,6]:
         return 0
     elif index in [1,4,7]:
@@ -82,23 +59,39 @@ def currentColumn(index):
     else:
         return 2
 
+def correct_r(value):
+    correct_rows = {
+        1: 0, 2: 0, 3: 0,
+        4: 1, 5: 1, 6: 1,
+        7: 2, 8: 2, 0: 2 
+    }
+    return correct_rows[value]
+    
+def correct_c(value):
+    correct_cols = {
+        1: 0, 2: 1, 3: 2,
+        4: 0, 5: 1, 6: 2,
+        7: 0, 8: 1, 0: 2 
+    }
+    return correct_cols[value]
+
 def h3(s):
     # implement this function
-    goal = (1,2,3,4,5,6,7,8,0)
+    goal = (1, 2, 3, 4, 5, 6, 7, 8, 0)
     board, _, _ = s
     res = 0
-    wrongRows = 0
-    wrongCols = 0
-    for i in range(0,9):
-        currentValue = board[i]
-        cColumn = correctColumn(currentValue)
-        cRow = correctRow(currentValue)
-        curCol = currentColumn(i)
-        curRow = currentRow(i)
-        
-        if cColumn != curCol:
-            wrongCols += 1
-        if cRow != curRow:
-            wrongRows += 1
-    res = wrongCols + wrongRows
+    wrongcolumn = 0
+    wrongrow = 0
+    for idx in range(0, 9):
+        if goal[idx] != board[idx]:
+            value = board[idx]
+            curr_r = current_r(idx)
+            curr_c = current_c(idx)
+            corr_r = correct_r(value)
+            corr_c = correct_c(value)
+            if curr_c != corr_c:
+                wrongcolumn += 1
+            if curr_r != corr_r:
+                wrongrow += 1
+    res = wrongcolumn + wrongrow
     return res
